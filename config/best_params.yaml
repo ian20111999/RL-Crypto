@@ -1,0 +1,11 @@
+batch_size: 64
+clip_range: 0.3533188046926359
+ent_coef: 9.181576963704493e-06
+gae_lambda: 0.9623370419294938
+gamma: 0.9967399298799166
+learning_rate: 8.051458446697599e-05
+max_grad_norm: 0.9792642637464956
+n_epochs: 7
+n_steps: 4096
+net_arch_type: medium
+vf_coef: 0.1520275783099103
