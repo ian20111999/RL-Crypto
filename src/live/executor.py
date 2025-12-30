@@ -319,10 +319,27 @@ class LiveExecutor:
         
         # Execute trades for each symbol
         for i, symbol in enumerate(self.symbols):
-            target_position = float(action[i])
-            current_price = self.ws_client.get_price(symbol)
+            raw_action = float(action[i])
             
+            # 1. Action Smoothing (Alpha = 0.8)
+            # This reduces signal volatility from the RL model
+            last_action = self.last_actions.get(symbol, 0.0)
+            alpha = 0.8
+            smoothed_action = alpha * last_action + (1 - alpha) * raw_action
+            self.last_actions[symbol] = smoothed_action
+            
+            target_position = smoothed_action
+            
+            current_price = self.ws_client.get_price(symbol)
             if current_price is None:
+                continue
+                
+            # 2. Deadband (Threshold = 0.05)
+            # Only trade if the target position change is significant
+            # Note: positions[i] here comes from risk_manager.positions which tracks 'size' (weight)
+            current_weight = positions[i]
+            if abs(target_position - current_weight) < 0.05:
+                # Change too small, skip
                 continue
             
             # Apply risk management

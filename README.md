@@ -35,14 +35,45 @@ python scripts/train.py --steps 100000  # 完整訓練
 python scripts/optimize.py --trials 50 --timesteps 50000
 
 # 6. 回測
-python scripts/backtest.py --symbol BTCUSDT
+python scripts/backtest.py \
+  --model models/ppo_trading_final \
+  --symbol BTCUSDT \
+  --save-json reports/latest_backtest_results.json
 
-# 7. 啟動 Dashboard
+# 7. 性能評估與重訓判斷
+python scripts/evaluate_model_performance.py
+
+# 8. 自動化重訓 Pipeline
+./scripts/auto_retrain.sh
+
+# 9. 啟動 Dashboard
 streamlit run scripts/dashboard.py
 
-# 8. 實盤交易 (Testnet)
+# 10. 實盤交易 (Testnet)
 python -m src.live.executor --model models/ppo_trading_final --live
 ```
+
+## 🔄 完整訓練 Pipeline
+
+使用 `/model-pipeline` workflow 查看完整流程：
+
+```bash
+# 完整 Pipeline（從頭開始）
+python scripts/collect_data.py --days 90
+python scripts/optimize.py --trials 50 --timesteps 50000
+python scripts/train.py --steps 100000
+python scripts/backtest.py --model models/ppo_trading_final --symbol BTCUSDT --save-json reports/latest_backtest_results.json
+python scripts/evaluate_model_performance.py
+
+# 或使用自動化腳本
+./scripts/auto_retrain.sh
+```
+
+**自動重訓判斷**：
+- ✅ 性能指標達標檢查（Sharpe ≥ 1.0, Return ≥ 5%, Drawdown ≤ 20%）
+- ✅ 資料漂移檢測（波動率變化 > 50%）
+- ✅ 時間觸發（距上次訓練 > 30 天)
+
 
 ## 🔔 Telegram 通知
 

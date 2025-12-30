@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>回測報告</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .summary-table th, .summary-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: right;
+        }
+        .summary-table th {
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+        }
+        .summary-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .positive {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .negative {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .chart {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chart img {
+            width: 100%;
+            height: auto;
+        }
+        .timestamp {
+            color: #888;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 RL-Crypto 回測報告</h1>
+    <p class="timestamp">生成時間: 2025-12-29 16:42:32</p>
+    
+    <h2>策略表現總結</h2>
+    <table class="summary-table">
+        <tr>
+            <th>策略</th>
+            <th>總收益率</th>
+            <th>Sharpe Ratio</th>
+            <th>最大回撤</th>
+            <th>交易次數</th>
+            <th>勝率</th>
+        </tr>
+
+        <tr>
+            <td style="text-align: left;"><strong>Buy & Hold</strong></td>
+            <td class="negative">-1.37%</td>
+            <td>-0.19</td>
+            <td class="negative">6.94%</td>
+            <td>4286</td>
+            <td>0.5%</td>
+        </tr>
+
+        <tr>
+            <td style="text-align: left;"><strong>SMA Crossover (10/50)</strong></td>
+            <td class="positive">16.31%</td>
+            <td>66.35</td>
+            <td class="negative">88.91%</td>
+            <td>5128</td>
+            <td>0.5%</td>
+        </tr>
+
+        <tr>
+            <td style="text-align: left;"><strong>SMA Crossover (20/100)</strong></td>
+            <td class="positive">33.60%</td>
+            <td>43.35</td>
+            <td class="negative">77.19%</td>
+            <td>5537</td>
+            <td>0.5%</td>
+        </tr>
+
+        <tr>
+            <td style="text-align: left;"><strong>RSI Mean Reversion</strong></td>
+            <td class="negative">-69.08%</td>
+            <td>3.26</td>
+            <td class="negative">82.89%</td>
+            <td>8980</td>
+            <td>0.1%</td>
+        </tr>
+
+    </table>
+    
+    <h2>視覺化分析</h2>
+    
+    <div class="chart">
+        <h3>資金曲線對比</h3>
+        <img src="equity_curves.png" alt="資金曲線">
+    </div>
+    
+    <div class="chart">
+        <h3>回撤曲線</h3>
+        <img src="drawdown_curves.png" alt="回撤曲線">
+    </div>
+    
+    <div class="chart">
+        <h3>策略對比</h3>
+        <img src="strategy_comparison.png" alt="策略對比">
+    </div>
+    
+    <div class="chart">
+        <h3>收益分布</h3>
+        <img src="returns_distribution.png" alt="收益分布">
+    </div>
+    
+    <div class="chart">
+        <h3>累積 PnL</h3>
+        <img src="cumulative_pnl.png" alt="累積 PnL">
+    </div>
+    
+    <div class="chart">
+        <h3>每月收益率</h3>
+        <img src="monthly_returns.png" alt="每月收益率">
+    </div>
+    
+</body>
+</html>

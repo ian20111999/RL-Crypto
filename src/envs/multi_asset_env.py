@@ -33,6 +33,7 @@ class MultiAssetTradingEnv(gym.Env):
         reward_scaling: float = 100.0,
         transaction_penalty: float = 0.001,
         drawdown_penalty: float = 0.1,
+        reward_function_type: str = "original",  # "original", "stability", "moderate", "v1_aggressive", "v2_balanced", "v3_sharpe"
         render_mode: Optional[str] = None,
     ):
         """Initialize multi-asset trading environment.
@@ -81,6 +82,7 @@ class MultiAssetTradingEnv(gym.Env):
         self.reward_scaling = reward_scaling
         self.transaction_penalty = transaction_penalty
         self.drawdown_penalty = drawdown_penalty
+        self.reward_function_type = reward_function_type
 
         self.render_mode = render_mode
 
@@ -305,6 +307,22 @@ class MultiAssetTradingEnv(gym.Env):
         Returns:
             Reward value
         """
+        # 使用優化的reward functions
+        if self.reward_function_type != "original":
+            from src.envs.reward_functions import (
+                calculate_reward_v1_aggressive,
+                calculate_reward_v2_balanced,
+                calculate_reward_v3_sharpe,
+            )
+            
+            if self.reward_function_type == "v1_aggressive":
+                return calculate_reward_v1_aggressive(self, actions)
+            elif self.reward_function_type == "v2_balanced":
+                return calculate_reward_v2_balanced(self, actions)
+            elif self.reward_function_type == "v3_sharpe":
+                return calculate_reward_v3_sharpe(self, actions)
+        
+        # 原版reward（保持不變）
         # Portfolio return
         returns = (self.portfolio_value - self.prev_portfolio_value) / self.prev_portfolio_value
         reward = returns * self.reward_scaling
