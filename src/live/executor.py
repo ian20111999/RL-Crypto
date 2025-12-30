@@ -87,6 +87,7 @@ class LiveExecutor:
         # State
         self.is_running = False
         self.ws_client: Optional[BinanceWebSocket] = None
+        self.last_actions: dict[str, float] = {s: 0.0 for s in self.symbols}  # For action smoothing
         
         # Alert manager for notifications
         self.alert_manager = AlertManager(
